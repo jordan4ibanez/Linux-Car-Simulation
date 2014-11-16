@@ -10,6 +10,7 @@ class render_environment():
 			screen.fill((0,0,0))
 			#check the body points from the calculations and render them
 			body_points = geometry_calc().return_points_to_render()
+			pygame.draw.polygon(screen, (255,255,255), [body_points[1],body_points[2],body_points[3],body_points[4]])			
 			for i in range(len(body_points)):
 				pygame.draw.circle(screen, (255,0,0), body_points[i+1], 3)
 				

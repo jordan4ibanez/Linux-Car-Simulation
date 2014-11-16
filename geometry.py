@@ -12,15 +12,20 @@ class geometry_calc():
 			#make this use ints and divide to get float for cleaner stuff
 			if direction == "left":
 				#steering_angle = steering_angle - steering_rate
+				
 				for i in range(len(body)):
 					body[i+1] = body[i+1] + steering_rate
+					if body[i+1] > superpi:
+						body[i+1] = 0
 			if direction == "right":
 				#steering_angle = steering_angle + steering_rate
 				for i in range(len(body)):
 					body[i+1] = body[i+1] - steering_rate
+					if body[i+1] < 0:
+						body[i+1] = superpi
 			if direction == "none":
 				pass #straighten
-			print(steering_angle)
+
 	#def rotation(self): #reminder
 			
 			
@@ -45,7 +50,7 @@ class geometry_calc():
 			#Steering
 			steering_degree = 0 #actual steering degree (float)
 			steering_angle  = 0 #a whole number up to 1000 down to -1000 (int)
-			steering_rate   = 0.001
+			steering_rate   = 0.005
 			steering_lock   = 0.5
 			
 			#Body Corners
