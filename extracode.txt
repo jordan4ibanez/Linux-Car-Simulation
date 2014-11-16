@@ -1,0 +1,30 @@
+				"""
+	if keypress[K_ESCAPE]:
+		sys.exit()
+	elif keypress[K_LEFT]:
+		if steering_angle < steering_lock:
+			steering_angle = steering_angle + steering_rate
+			wheelpoint1 = wheelpoint1 + steering_rate
+			wheelpoint2 = wheelpoint2 + steering_rate
+			wheelpoint3 = wheelpoint3 + steering_rate
+			wheelpoint4 = wheelpoint4 + steering_rate
+	elif keypress[K_RIGHT]:
+		if steering_angle > -steering_lock:
+			steering_angle = steering_angle - steering_rate
+			wheelpoint1 = wheelpoint1 - steering_rate
+			wheelpoint2 = wheelpoint2 - steering_rate
+			wheelpoint3 = wheelpoint3 - steering_rate
+			wheelpoint4 = wheelpoint4 - steering_rate
+	elif steering_angle > 0:
+			steering_angle = steering_angle - steering_rate
+			wheelpoint1 = wheelpoint1 - steering_rate
+			wheelpoint2 = wheelpoint2 - steering_rate
+			wheelpoint3 = wheelpoint3 - steering_rate
+			wheelpoint4 = wheelpoint4 - steering_rate
+	elif steering_angle < 0:
+			steering_angle = steering_angle + steering_rate
+			wheelpoint1 = wheelpoint1 + steering_rate
+			wheelpoint2 = wheelpoint2 + steering_rate
+			wheelpoint3 = wheelpoint3 + steering_rate
+			wheelpoint4 = wheelpoint4 + steering_rate
+			"""
