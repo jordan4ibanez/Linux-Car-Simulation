@@ -20,13 +20,8 @@ class input():
 			
 	def steering_input(self):
 		if keypress[K_LEFT]:
-			#print("LEFT!")
 			return("left")
-			#if steering_angle < steering_lock:
-				#steering_angle = steering_angle + steering_rate
 		if keypress[K_RIGHT]:
-			#print("RIGHT!")
 			return("right")
-			#if steering_angle > -steering_lock:
-				#steering_angle = steering_angle - steering_rate
+			
 		return("none")

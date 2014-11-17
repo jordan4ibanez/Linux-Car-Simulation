@@ -1,0 +1,5 @@
+Body physics 
+
+Either:
+	1.  the body of the car has inertia and the wheels try to fight it and go in the direction they should, but the body fights back, which allows the calculation of wheel force
+	1a. the body has inertial load, which is the center of gravity displacing from the center, and that can add or remove traction on wheels

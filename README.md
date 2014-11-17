@@ -1,4 +1,7 @@
-##Goals of this project
+##Reason for this project
+Linux has some great games, but the one thing I think it clearly lacks is a realistic driving simulation. All the driving simulations that I have tried on this platform are not up to snuff with what people would expect from a driving simulator. The goal of this project is to have a driving simulation which is realistic, open source, gplv2 and always free.
+
+##Goals of this project (2D)
 1. 2d car simulator 
 2. car body and individual wheels simulated which affect the body
 3. Realistic car physics, oversteer, understeer, tires breaking traction

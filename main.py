@@ -1,3 +1,4 @@
+#ALL COMMENTS ARE WRITTEN IN CAPS TO MAKE THEM STAND OUT
 from render   import *
 from geometry import *
 from input    import *
