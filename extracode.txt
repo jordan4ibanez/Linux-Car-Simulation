@@ -1,30 +1,66 @@
-				"""
-	if keypress[K_ESCAPE]:
-		sys.exit()
-	elif keypress[K_LEFT]:
-		if steering_angle < steering_lock:
-			steering_angle = steering_angle + steering_rate
-			wheelpoint1 = wheelpoint1 + steering_rate
-			wheelpoint2 = wheelpoint2 + steering_rate
-			wheelpoint3 = wheelpoint3 + steering_rate
-			wheelpoint4 = wheelpoint4 + steering_rate
-	elif keypress[K_RIGHT]:
-		if steering_angle > -steering_lock:
-			steering_angle = steering_angle - steering_rate
-			wheelpoint1 = wheelpoint1 - steering_rate
-			wheelpoint2 = wheelpoint2 - steering_rate
-			wheelpoint3 = wheelpoint3 - steering_rate
-			wheelpoint4 = wheelpoint4 - steering_rate
-	elif steering_angle > 0:
-			steering_angle = steering_angle - steering_rate
-			wheelpoint1 = wheelpoint1 - steering_rate
-			wheelpoint2 = wheelpoint2 - steering_rate
-			wheelpoint3 = wheelpoint3 - steering_rate
-			wheelpoint4 = wheelpoint4 - steering_rate
-	elif steering_angle < 0:
-			steering_angle = steering_angle + steering_rate
-			wheelpoint1 = wheelpoint1 + steering_rate
-			wheelpoint2 = wheelpoint2 + steering_rate
-			wheelpoint3 = wheelpoint3 + steering_rate
-			wheelpoint4 = wheelpoint4 + steering_rate
-			"""
+		if "variables" in globals():
+						
+			#make this use ints and divide to get float for cleaner stuff
+			direction = input().steering_input()
+			if direction == "left":
+				if steering_angle  < steering_lock:
+					steering_angle += steering_rate
+					for i in range(len(hub)):
+						front_wheels[i+1]  = front_wheels[i+1]  + steering_rate
+			else:
+				if steering_angle  > 0:
+					steering_angle -= steering_rate
+					for i in range(len(hub)):
+						front_wheels[i+1]  = front_wheels[i+1]  - steering_rate
+			if direction == "right":
+				if steering_angle  > -steering_lock:
+					steering_angle -= steering_rate
+					for i in range(len(hub)):
+						front_wheels[i+1]  = front_wheels[i+1]  - steering_rate
+			else:
+				if steering_angle  < 0:
+					steering_angle += steering_rate
+					for i in range(len(hub)):
+						front_wheels[i+1]  = front_wheels[i+1] + steering_rate
+	
+			throttle = input().throttle_input()
+			rotation_speed = steering_angle/100
+			if throttle == "up":
+				new_x, new_y = math.sin(rotation), math.cos(rotation)
+				posx    = posx - new_x
+				posy    = posy - new_y
+				rotation += rotation_speed
+				for i in range(len(hub)):
+						body[i+1] = body[i+1] + rotation_speed
+						hub[i+1]  = hub[i+1]  + rotation_speed
+						rear_wheels[i+1]  = rear_wheels[i+1]  + rotation_speed
+						front_wheels[i+1]  = front_wheels[i+1]  + rotation_speed
+						
+			if throttle == "down":
+				new_x, new_y = math.sin(rotation), math.cos(rotation)
+				posx    = posx + new_x
+				posy    = posy + new_y
+				rotation -= rotation_speed
+				for i in range(len(hub)):
+						body[i+1] = body[i+1] - rotation_speed
+						hub[i+1]  = hub[i+1]  - rotation_speed
+						rear_wheels[i+1]  = rear_wheels[i+1]  - rotation_speed
+						front_wheels[i+1]  = front_wheels[i+1]  - rotation_speed	
+
+
+			##TESTING ROTATION
+			test = False
+			test_rotate = 0.1
+			if test == True:
+				rotation = rotation - test_rotate
+				for i in range(len(body)):
+						body[i+1] = body[i+1] - test_rotate
+				for i in range(len(hub)):
+						hub[i+1]  = hub[i+1]  - test_rotate
+						rear_wheels[i+1]  = rear_wheels[i+1]  - test_rotate
+						front_wheels[i+1]  = front_wheels[i+1]  - test_rotate
+			
+-----------------------------------------------------------------------------------------
+			#axles
+			for i in range(5,7):
+				body_points[i] = int(math.sin(body[i])*(body_size*0.6)+ posx), int(math.cos(body[i])*(body_size*0.6) + posy)

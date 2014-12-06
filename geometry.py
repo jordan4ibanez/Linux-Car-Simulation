@@ -8,63 +8,30 @@ class geometry_calc():
 						
 			#make this use ints and divide to get float for cleaner stuff
 			direction = input().steering_input()
-			if direction == "left":
-				if steering_angle  < steering_lock:
-					steering_angle += steering_rate
-					for i in range(len(hub)):
-						front_wheels[i+1]  = front_wheels[i+1]  + steering_rate
-			else:
-				if steering_angle  > 0:
-					steering_angle -= steering_rate
-					for i in range(len(hub)):
-						front_wheels[i+1]  = front_wheels[i+1]  - steering_rate
-			if direction == "right":
-				if steering_angle  > -steering_lock:
-					steering_angle -= steering_rate
-					for i in range(len(hub)):
-						front_wheels[i+1]  = front_wheels[i+1]  - steering_rate
-			else:
-				if steering_angle  < 0:
-					steering_angle += steering_rate
-					for i in range(len(hub)):
-						front_wheels[i+1]  = front_wheels[i+1] + steering_rate
-	
-			throttle = input().throttle_input()
-			rotation_speed = steering_angle/100
-			if throttle == "up":
-				new_x, new_y = math.sin(rotation), math.cos(rotation)
-				posx    = posx - new_x
-				posy    = posy - new_y
-				rotation += rotation_speed
-				for i in range(len(hub)):
-						body[i+1] = body[i+1] + rotation_speed
-						hub[i+1]  = hub[i+1]  + rotation_speed
-						rear_wheels[i+1]  = rear_wheels[i+1]  + rotation_speed
-						front_wheels[i+1]  = front_wheels[i+1]  + rotation_speed
-			if throttle == "down":
-				new_x, new_y = math.sin(rotation), math.cos(rotation)
-				posx    = posx + new_x
-				posy    = posy + new_y
-				rotation -= rotation_speed
-				for i in range(len(hub)):
-						body[i+1] = body[i+1] - rotation_speed
-						hub[i+1]  = hub[i+1]  - rotation_speed
-						rear_wheels[i+1]  = rear_wheels[i+1]  - rotation_speed
-						front_wheels[i+1]  = front_wheels[i+1]  - rotation_speed	
-
-
-			##TESTING ROTATION
-			test = False
-			rotation_speed = 0.001
-			if test == True:
-				rotation = rotation - rotation_speed
-				for i in range(len(body)):
-						body[i+1] = body[i+1] - rotation_speed
-				for i in range(len(hub)):
-						hub[i+1]  = hub[i+1]  - rotation_speed
-						rear_wheels[i+1]  = rear_wheels[i+1]  - rotation_speed
-						front_wheels[i+1]  = front_wheels[i+1]  - rotation_speed
 			
+			throttle = input().throttle_input()
+			
+			#Treat each wheel as individual entities to the body
+			if throttle == "up":
+				#rear right test				
+				opposite = posy
+				adjacent = body_points[6][1]
+				spin = (adjacent/opposite)*0.01
+				
+				xer = math.cos(body_points[6][0]-body_points[5][0])
+				yer = math.cos(body_points[6][1]-body_points[5][1])
+				
+				print(xer,yer)
+				posx += xer
+				posy += yer
+				
+				for i in range(len(body)):
+					body[i+1] = body[i+1] + spin
+				for i in range(len(hub)):
+						hub[i+1]  = hub[i+1]  + spin
+						rear_wheels[i+1]  = rear_wheels[i+1]  + spin
+						front_wheels[i+1]  = front_wheels[i+1]  + spin
+				
 			
 					
 			#MAKE SURE POINTS ARE IN REAL BOUNDARIES
@@ -92,10 +59,15 @@ class geometry_calc():
 					rear_wheels[i+1] = 0
 				if rear_wheels[i+1] < 0:
 					rear_wheels[i+1] = superpi
-					
+			#Make sure center is an integer
+			posx = int(posx)
+			posy = int(posy)	
 			#BODY, HUBS, WHEELS
-			for i in range(len(body)):
+			for i in range(len(body)-2):
 				body_points[i+1] = int(math.sin(body[i+1])*body_size+ posx), int(math.cos(body[i+1])*body_size + posy)
+			for i in range(5,7):
+				body_points[i] = int(math.sin(body[i])*(body_size*0.6)+ posx), int(math.cos(body[i])*(body_size*0.6) + posy)
+				
 			for i in range(len(hub)):
 				hub_points[i+1] = int(math.sin(hub[i+1])*70+ posx), int(math.cos(hub[i+1])*70 + posy) #EVENTUALLY HAVE THIS USE A VALUE FOR HUB SPACING
 			for a in range(0,2):
@@ -117,7 +89,8 @@ class geometry_calc():
 			#globalize everything for reuse, but neatly in groups in the order they're assigned
 			global superpi,picorrection  
 			global steering_angle,steering_rate,steering_lock
-			global rotation,body_size,center,posx,posy,body
+			global rotation,velocity_x,velocity_y,interia_x,interia_y,rotation_velocity,rotation_intertia
+			global body_size,center,posx,posy,body
 			global hub
 			global wheel_size
 			global front_wheels
@@ -133,12 +106,17 @@ class geometry_calc():
 			#Steering
 			steering_degree = 0 #actual steering degree (float)
 			steering_angle  = 0 #a whole number up to 1000 down to -1000 (int)
-			steering_rate   = 0.001
+			steering_rate   = 0.005
 			steering_lock   = 0.5
 
+			#Physics
+			rotation = 0
+			velocity_x,velocity_y = 0,0
+			interia_x,interia_y = 0,0
+			rotation_velocity = 0
+			rotation_intertia = 0 #max is 0.1 min is -0.1
 			
 			#Body Corners
-			rotation = 0
 			body_size = 100
 			center = posx,posy = 450,450
 			body = {}
@@ -146,7 +124,8 @@ class geometry_calc():
 			body[2] = 155 * picorrection#"front_right"
 			body[3] = 25  * picorrection#"rear_left"
 			body[4] = 335 * picorrection#"rear_right"
-			#body[5] = 180 * picorrection#NOSE
+			body[5] = 180 * picorrection#NOSE
+			body[6]  = 360 * picorrection#TAIL
 			
 			#TODO: rotate the wheels hubs with the corners of the body for deformation purposes
 			#wheel hubs - on this vehicle, it's fr -5 fl +5 deg -30% total length to get hub points to where the tires will pivot off of
@@ -183,8 +162,10 @@ class geometry_calc():
 			
 			#THE BODY
 			body_points = {}
-			for i in range(len(body)):
+			for i in range(len(body)-2):
 				body_points[i+1] = int(math.sin(body[i+1])*body_size+ posx), int(math.cos(body[i+1])*body_size + posy)
+			for i in range(5,7):
+				body_points[i] = int(math.sin(body[i])*(body_size*65)+ posx), int(math.cos(body[i])*(body_size*65) + posy)
 				
 			#THE WHEEL HUBS
 			hub_points = {}
@@ -208,5 +189,5 @@ class geometry_calc():
 						
 					
 	def return_points_to_render(self):
-		return(body_points,hub_points,wheels)
+		return(body_points,hub_points,wheels,posx,posy)
 

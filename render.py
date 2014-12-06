@@ -12,7 +12,7 @@ class render_environment():
 			
 			
 			#GET THE POINTS FROM THE GEOMETRY CALC CLASS AND RENDER THEM
-			body_points,hub_points,wheels = geometry_calc().return_points_to_render()
+			body_points,hub_points,wheels,posx,posy = geometry_calc().return_points_to_render()
 			
 			pygame.draw.polygon(screen, (255,255,255), [body_points[1],body_points[2],body_points[3],body_points[4]])			
 			
@@ -38,7 +38,8 @@ class render_environment():
 			for i in range(len(hub_points)):
 				pygame.draw.circle(screen, (255,0,0), hub_points[i+1], 5)
 						
-							
+			pygame.draw.circle(screen, (255,0,0), (posx,posy), 5)
+				
 			pygame.display.flip()
 			
 			
