@@ -10,6 +10,10 @@ Linux has some great games, but the one thing I think it clearly lacks is a real
 6. skid marks, smoke, effects
 7. Light levels which affect the ability to see the course
 8. Lights (head lights, fog lights, etc...)
+9. Transmission (resistance, clutch, etc..) Engine (Horsepower, torque, heat, etc...) Suspension
+
+##Optional:
+1. Four Wheel Steering
  
 ##Beyond this project
 1. 3d car simulator

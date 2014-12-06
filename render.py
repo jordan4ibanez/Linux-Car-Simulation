@@ -47,7 +47,7 @@ class render_environment():
 			
 			global rendering,screensize,screen,font
 			
-			screensize = screenh,screenw = 900, 900
+			screensize = screenw,screenh = 1600, 900
 			screen     = pygame.display.set_mode(screensize)
 			rendering  = True
 			pygame.display.set_caption("Car Physics Simulation 2D")

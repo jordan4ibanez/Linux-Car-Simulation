@@ -25,3 +25,11 @@ class input():
 			return("right")
 			
 		return("none")
+		
+	def throttle_input(self):
+		if keypress[K_UP]:
+			return("up")
+		if keypress[K_DOWN]:
+			return("down")
+			
+		return("none")
